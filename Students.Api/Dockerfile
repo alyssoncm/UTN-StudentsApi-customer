@@ -11,7 +11,7 @@ FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 ARG configuration=Release
 WORKDIR /src
 COPY ["Students.Api/Students.Api.csproj", "Students.Api/"]
-RUN dotnet restore "Students.Api/Students.Api.csproj"
+RUN dotnet restore "Students.Api.csproj"
 COPY . .
 WORKDIR "/src/Students.Api"
 RUN dotnet build "Students.Api.csproj" -c $configuration -o /app/build
@@ -22,5 +22,4 @@ RUN dotnet publish "Students.Api.csproj" -c $configuration -o /app/publish /p:Us
 
 FROM base AS final
 WORKDIR /app
-COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "Students.Api.dll"]
+COPY --from=publish /app/publish
